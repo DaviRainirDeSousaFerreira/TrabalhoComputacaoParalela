@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cluster em Rede — Relatório de Computação Distribuída</title>
+  <style>
+    :root {
+      --ink: #18202b;
+      --muted: #667080;
+      --paper: #f4f1eb;
+      --white: #fffefa;
+      --line: #dedbd3;
+      --blue: #2457d6;
+      --blue2: #dfe8ff;
+      --orange: #e87535;
+      --orange2: #fff0e6;
+      --green: #24785b;
+      --green2: #e2f2ea;
+      --red: #a7443c;
+      --dark: #172337
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 15px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif
+    }
+
+    a {
+      color: inherit
+    }
+
+    .top {
+      background: var(--dark);
+      color: #fff;
+      padding: 18px max(22px, calc((100% - 1180px)/2));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px
+    }
+
+    .brand {
+      font-weight: 850;
+      letter-spacing: .09em;
+      font-size: 12px;
+      text-transform: uppercase
+    }
+
+    .top span {
+      color: #b9c5d8;
+      font-size: 12px
+    }
+
+    .hero {
+      background: var(--dark);
+      color: white;
+      padding: 64px max(22px, calc((100% - 1180px)/2)) 58px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .hero:after {
+      content: "";
+      position: absolute;
+      width: 460px;
+      height: 460px;
+      border: 1px solid #ffffff22;
+      border-radius: 50%;
+      right: -100px;
+      top: -210px;
+      box-shadow: 0 0 0 55px #ffffff08, 0 0 0 110px #ffffff06
+    }
+
+    .eyebrow {
+      color: #9eb8ff;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: .18em;
+      font-weight: 800
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 70px);
+      line-height: 1.02;
+      max-width: 850px;
+      margin: 18px 0 20px;
+      letter-spacing: -.055em
+    }
+
+    .hero p {
+      max-width: 720px;
+      color: #c8d1df;
+      font-size: 17px;
+      margin: 0
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      margin-top: 34px;
+      color: #aebbd0;
+      font-size: 12px
+    }
+
+    .hero-meta b {
+      color: white
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 30px 22px 80px;
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      gap: 34px
+    }
+
+    .nav {
+      position: sticky;
+      top: 20px;
+      align-self: start;
+      background: var(--white);
+      border: 1px solid var(--line);
+      padding: 20px;
+      border-radius: 14px
+    }
+
+    .nav b {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      color: var(--muted);
+      margin-bottom: 12px
+    }
+
+    .nav a {
+      display: block;
+      text-decoration: none;
+      padding: 7px 0;
+      color: #475263;
+      font-size: 13px;
+      border-bottom: 1px solid #efede8
+    }
+
+    .nav a:hover {
+      color: var(--blue)
+    }
+
+    main {
+      min-width: 0
+    }
+
+    .section {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 22px;
+      box-shadow: 0 8px 26px #18202b08
+    }
+
+    .section-kicker {
+      font-size: 11px;
+      font-weight: 850;
+      color: var(--blue);
+      letter-spacing: .15em;
+      text-transform: uppercase
+    }
+
+    .section h2 {
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -.035em;
+      margin: 8px 0 14px
+    }
+
+    .section h3 {
+      font-size: 18px;
+      margin: 25px 0 8px
+    }
+
+    .lead {
+      font-size: 16px;
+      color: #4e5968;
+      max-width: 850px
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 22px 0
+    }
+
+    .metric {
+      padding: 18px;
+      border-radius: 12px;
+      background: #f0eee8;
+      border: 1px solid #e7e3da
+    }
+
+    .metric .label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -.04em;
+      margin: 7px 0 1px
+    }
+
+    .metric small {
+      color: var(--muted);
+      font-size: 11px
+    }
+
+    .blue {
+      background: var(--blue2)
+    }
+
+    .orange {
+      background: var(--orange2)
+    }
+
+    .green {
+      background: var(--green2)
+    }
+
+    .note {
+      padding: 15px 17px;
+      border-left: 4px solid var(--orange);
+      background: #fff6ef;
+      border-radius: 0 9px 9px 0;
+      color: #5d493d;
+      margin: 18px 0
+    }
+
+    .note.info {
+      border-color: var(--blue);
+      background: #eef3ff;
+      color: #394b70
+    }
+
+    .note.ok {
+      border-color: var(--green);
+      background: #edf7f1;
+      color: #315b48
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 13px
+    }
+
+    th {
+      text-align: left;
+      background: #f0eee8;
+      color: #465163;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .06em
+    }
+
+    th,
+    td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top
+    }
+
+    td.num,
+    th.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums
+    }
+
+    .scroll {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px
+    }
+
+    .scroll table {
+      margin: 0;
+      min-width: 620px
+    }
+
+    .topology {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 18px 0
+    }
+
+    .topo {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px
+    }
+
+    .topo .tag {
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--orange)
+    }
+
+    .topo h3 {
+      margin: 6px 0;
+      font-size: 19px
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 13px 0
+    }
+
+    .node {
+      background: #eef2fa;
+      border: 1px solid #dce4f4;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    .arrow {
+      color: var(--orange);
+      font-weight: 900
+    }
+
+    .log {
+      background: #131d2c;
+      color: #d7e2f2;
+      border-radius: 11px;
+      padding: 16px 18px;
+      overflow: auto;
+      font: 12px/1.7 ui-monospace, SFMono-Regular, Consolas, monospace;
+      white-space: pre-wrap;
+      margin: 12px 0
+    }
+
+    .log b {
+      color: #90b1ff
+    }
+
+    .status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: var(--green2);
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase
+    }
+
+    .bars {
+      display: grid;
+      gap: 13px;
+      margin: 20px 0
+    }
+
+    .barrow {
+      display: grid;
+      grid-template-columns: 145px 1fr 85px;
+      gap: 10px;
+      align-items: center;
+      font-size: 12px
+    }
+
+    .track {
+      height: 13px;
+      background: #e9e6df;
+      border-radius: 20px;
+      overflow: hidden
+    }
+
+    .fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 20px
+    }
+
+    .fill.orangefill {
+      background: var(--orange)
+    }
+
+    .calc {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 16px 0
+    }
+
+    .calc label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 5px
+    }
+
+    .calc input {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      font: inherit
+    }
+
+    .calc-results {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px
+    }
+
+    .calc-results div {
+      padding: 15px;
+      background: var(--dark);
+      color: white;
+      border-radius: 10px
+    }
+
+    .calc-results span {
+      display: block;
+      color: #b8c4d6;
+      font-size: 11px
+    }
+
+    .calc-results strong {
+      font-size: 24px
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .footer {
+      padding: 22px 0;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--line)
+    }
+
+    .print {
+      background: var(--orange);
+      color: #fff;
+      border: 0;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: 800;
+      cursor: pointer
+    }
+
+    @media(max-width:850px) {
+      .shell {
+        grid-template-columns: 1fr
+      }
+
+      .nav {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 14px
+      }
+
+      .nav b {
+        grid-column: 1/-1
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media(max-width:560px) {
+      .hero {
+        padding-top: 44px
+      }
+
+      .section {
+        padding: 21px
+      }
+
+      .topology,
+      .calc,
+      .calc-results {
+        grid-template-columns: 1fr
+      }
+
+      .barrow {
+        grid-template-columns: 105px 1fr 65px
+      }
+
+      .metric strong {
+        font-size: 22px
+      }
+    }
+
+    @media print {
+      body {
+        background: white
+      }
+
+      .top,
+      .nav,
+      .print {
+        display: none !important
+      }
+
+      .hero {
+        padding: 25px;
+        background: #172337 !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact
+      }
+
+      .shell {
+        display: block;
+        padding: 0;
+        max-width: none
+      }
+
+      .section {
+        break-inside: avoid;
+        box-shadow: none;
+        margin: 12px 0;
+        border: 1px solid #bbb
+      }
+
+      .log {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact
+      }
+
+      .hero:after {
+        display: none
+      }
+
+      a {
+        text-decoration: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top">
+    <div class="brand">Cluster em Rede <span> / laboratório de sistemas distribuídos</span></div><button class="print"
+      onclick="window.print()">Imprimir / salvar PDF</button>
+  </div>
+  <header class="hero">
+    <div class="eyebrow">Relatório técnico · Computação distribuída</div>
+    <h1>Dois computadores.<br>Uma carga de trabalho.</h1>
+    <p>Implementação e avaliação de um sistema distribuído com coordenação por Socket.IO, processamento paralelo com
+      Worker Threads e recuperação de tarefas após falhas simuladas.</p>
+    <div class="hero-meta"><span><b>Ambiente:</b> Windows + Node.js</span><span><b>Participantes:</b> Davi,Gabriel e
+        Carlos Robert</span><span><b>Configuração:</b> até 2 workers por computador</span></div>
+  </header>
+  <div class="shell">
+    <aside class="nav"><b>Navegação do relatório</b>
+      <a href="#visao">Visão geral</a><a href="#arquitetura">Arquitetura e topologias</a><a
+        href="#conectividade">Conectividade</a><a href="#desempenho">Desempenho</a><a href="#workers">Workers</a><a
+        href="#falhas">Tolerância a falhas</a><a href="#logs">Execuções detalhadas</a><a href="#analise">Análise
+        crítica</a><a href="#calculadora">Calculadora</a><a href="#conclusao">Conclusão</a>
+    </aside>
+    <main>
+      <section class="section" id="visao">
+        <div class="section-kicker">01 / Visão geral</div>
+        <h2>O que foi implementado e validado</h2>
+        <p class="lead">O projeto divide um cálculo grande em partes, os computadores clientes resolvem essas partes
+          (podendo usar Workers para ajudar) e o servidor junta tudo. Se um computador falhar, o servidor passa a tarefa
+          para o outro.</p>
+        <div class="grid">
+          <div class="metric blue">
+            <div class="label">Computadores testados</div><strong>2</strong><small>Davi e Gabriel</small>
+          </div>
+          <div class="metric orange">
+            <div class="label">Workers por PC</div><strong>1 - 2</strong><small>Configuração variável</small>
+          </div>
+          <div class="metric green">
+            <div class="label">Maior intervalo</div><strong>1 bilhão</strong><small>Elementos processados</small>
+          </div>
+          <div class="metric">
+            <div class="label">Topologias</div><strong>2</strong><small>Servidor em cada computador</small>
+          </div>
+        </div>
+        <div class="note ok"><b>Resultado funcional central:</b> Testamos as duas formas de organizar o sistema
+          (servidor no computador do Davi e depois servidor no computador do Gabriel). Nos dois casos, os computadores
+          se conectaram, fizeram o cálculo e o resultado deu certo.</div>
+      </section>
+
+      <section class="section" id="arquitetura">
+        <div class="section-kicker">02 / Arquitetura</div>
+        <h2>Duas configurações, o mesmo sistema</h2>
+        <p>O sistema tem um servidor que organiza o trabalho, clientes que calculam e threads internas que ajudam.
+        </p>
+        <p>Como os computadores estão em redes diferentes, usamos um túnel Cloudflare para gerar uma URL pública que
+          conecta os dois. Cloudflare Quick Tunnel cria uma URL pública que aponta para a porta 3000 daquele computador.
+        </p>
+        <p>Socket.IO é uma biblioteca de comunicação em tempo real entre um servidor e um cliente que mantém uma conexão
+          aberta e bidirecional, permitindo enviar tarefas, receber resultados parciais e detectar automaticamente
+          quando um cliente se desconecta</p>
+        <div class="topology">
+          <div class="topo">
+            <div class="tag">Configuração A</div>
+            <h3>Servidor no computador de Davi</h3>
+            <div class="flow"><span class="node">Davi: servidor</span><span class="arrow">↔</span><span
+                class="node">Gabriel: cliente</span></div>
+            <p class="small">Davi também participa do processamento. Gabriel acessa remotamente o servidor de Davi pela
+              URL do túnel.</p>
+          </div>
+          <div class="topo">
+            <div class="tag">Configuração B</div>
+            <h3>Servidor no computador de Gabriel</h3>
+            <div class="flow"><span class="node">Gabriel: servidor</span><span class="arrow">↔</span><span
+                class="node">Davi: cliente</span></div>
+            <p class="small">Gabriel também participa do processamento. Davi acessa remotamente o servidor de Gabriel
+              pela URL do túnel.</p>
+          </div>
+        </div>
+        <div class="note info"><b>Como as duas tecnologias trabalham juntas?</b> Cloudflare Quick Tunnel dá um endereço
+          público temporário para o seu servidor local, para que outro computador em outra rede consiga acessá-lo.
+          Socket.IO mantém uma conexão aberta e bidirecional entre servidor e clientes, permitindo enviar tarefas,
+          receber resultados parciais e detectar automaticamente quando um cliente se desconecta.</div>
+      </section>
+
+      <section class="section" id="conectividade">
+        <div class="section-kicker">03 / Conectividade</div>
+        <h2>Comunicação entre as duas máquinas</h2>
+        <p class="lead">Esta seção mostra os testes para verificar se os dois computadores conseguem se comunicar. É a
+          base do projeto: antes de calcular qualquer coisa, os computadores precisam conversar.</p>
+
+        <div class="note info">
+          <b>O que é o /status?</b> É um endereço especial do servidor (endpoint). Quando acessado, ele responde com o estado
+          atual: quantos computadores estão conectados e se há um experimento rodando.
+        </div>
+
+        <style>
+          .test-card {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 18px;
+            background: #faf9f7;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+          }
+
+          .test-card h3 {
+            grid-column: 1 / -1;
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: var(--blue);
+            border-bottom: 2px solid var(--line);
+            padding-bottom: 10px;
+          }
+
+          .test-info p {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #4e5968;
+          }
+
+          .test-info b {
+            color: var(--ink);
+          }
+
+          .test-box {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+          }
+
+          .test-box.res {
+            border-left: 4px solid var(--green);
+            background: #edf7f1;
+          }
+
+          .test-box.sig {
+            border-left: 4px solid var(--blue);
+            background: #eef3ff;
+            grid-column: 1 / -1;
+            margin-bottom: 0;
+          }
+
+          .test-box .tag-title {
+            font-size: 11px;
+            font-weight: 850;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 4px;
+          }
+
+          @media(max-width: 850px) {
+            .test-card {
+              grid-template-columns: 1fr;
+            }
+          }
+        </style>
+
+        <!-- TESTE 1 -->
+        <div class="test-card">
+          <h3>Teste 1 — Conexão remota</h3>
+          <div class="test-info">
+            <div class="test-box">
+              <span class="tag-title">O que foi feito</span>
+              <p>O <b>Davi</b> ligou o servidor no PC dele e o <b>Gabriel</b> rodou o cliente apontando para a URL do
+                Davi.</p>
+            </div>
+            <div class="test-box res">
+              <span class="tag-title">Resultado</span>
+              <p><span class="status">Sucesso</span> Dois computadores conectados.</p>
+            </div>
+          </div>
+          <div class="test-info">
+            <div class="test-box sig">
+              <span class="tag-title">O que significa</span>
+              <p>O Gabriel conseguiu se conectar ao servidor do Davi. A comunicação básica funcionou.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TESTE 2 -->
+        <div class="test-card">
+          <h3>Teste 2 — Consulta de status</h3>
+          <div class="test-info">
+            <div class="test-box">
+              <span class="tag-title">O que foi feito</span>
+              <p>Com o Gabriel já conectado ao servidor do Davi, o Gabriel acessou o endereço <code>/status</code> do
+                servidor do Davi. O servidor respondeu com as informações.</p>
+            </div>
+            <div class="test-box res">
+              <span class="tag-title">Resultado</span>
+              <p><span class="status">Sucesso</span> O retorno indicou 2 nós conectados.</p>
+            </div>
+          </div>
+          <div class="test-info">
+            <div class="test-box sig">
+              <span class="tag-title">O que significa</span>
+              <p>O servidor do Davi reconheceu que <b>dois computadores</b> estavam conectados. <br><br>
+                <b>Por que é importante?</b> O Teste 1 mostra que a conexão aconteceu (o cliente conseguiu entrar). O
+                Teste 2 mostra que o servidor sabe disso (o servidor reconhece que ele está lá).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TESTE 3 -->
+        <div class="test-card">
+          <h3>Teste 3 — Conexão remota invertida</h3>
+          <div class="test-info">
+            <div class="test-box">
+              <span class="tag-title">O que foi feito</span>
+              <p>Agora invertemos: o <b>Gabriel</b> ligou o servidor no PC dele e o <b>Davi</b> rodou o cliente
+                apontando para a URL do Gabriel.</p>
+            </div>
+            <div class="test-box res">
+              <span class="tag-title">Resultado</span>
+              <p><span class="status">Sucesso</span> Dois computadores conectados.</p>
+            </div>
+          </div>
+          <div class="test-info">
+            <div class="test-box sig">
+              <span class="tag-title">O que significa</span>
+              <p>O Davi conseguiu se conectar ao servidor do Gabriel. Ou seja, a comunicação funciona <b>nos dois
+                  sentidos</b>, não importa quem é o servidor.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TESTE 4 -->
+        <div class="test-card">
+          <h3>Teste 4 — Consulta de status invertida</h3>
+          <div class="test-info">
+            <div class="test-box">
+              <span class="tag-title">O que foi feito</span>
+              <p>Com o Davi conectado como cliente ao servidor do Gabriel, o Davi acessou o endereço
+                <code>/status</code> do servidor do Gabriel.
+              </p>
+            </div>
+            <div class="test-box res">
+              <span class="tag-title">Resultado</span>
+              <p><span class="status">Sucesso</span> Dois nós registrados (cada computador participante).</p>
+            </div>
+          </div>
+          <div class="test-info">
+            <div class="test-box sig">
+              <span class="tag-title">O que significa</span>
+              <p>O servidor do Gabriel também reconheceu os dois computadores conectados. Confirma o Teste 2, só que no
+                sentido inverso. Qualquer um dos dois servidores consegue reconhecer e reportar os nós.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TESTE 5 -->
+        <div class="test-card">
+          <h3>Teste 5 — Cliente remoto desconectado</h3>
+          <div class="test-info">
+            <div class="test-box">
+              <span class="tag-title">O que foi feito</span>
+              <p>O Gabriel ligou o servidor e o Davi se conectou como cliente. Então, o <b>Gabriel encerrou o próprio
+                  cliente</b>, deixando apenas o Davi conectado. Em seguida, o status foi consultado.</p>
+            </div>
+            <div class="test-box res">
+              <span class="tag-title">Resultado</span>
+              <p><span class="status">Sucesso</span> Status indicou um nó conectado e nenhum experimento ativo.</p>
+            </div>
+          </div>
+          <div class="test-info">
+            <div class="test-box sig">
+              <span class="tag-title">O que significa</span>
+              <p>O servidor percebeu que um cliente saiu. O <code>/status</code> mostrou 1 nó conectado (só o Davi) e
+                que não havia experimento rodando. Isso prova que o servidor <b>detecta quando alguém desconecta</b> e
+                atualiza o estado.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TESTE 6 -->
+        <div class="test-card">
+          <h3>Teste 6 — Execução com um participante</h3>
+          <div class="test-info">
+            <div class="test-box">
+              <span class="tag-title">O que foi feito</span>
+              <p>O Gabriel ligou o servidor e o Davi se conectou. O Gabriel encerrou o próprio cliente. Com apenas o
+                Davi conectado, ele rodou um experimento de somar de <b>1 até 100.000.000</b>.</p>
+            </div>
+            <div class="test-box res">
+              <span class="tag-title">Resultado</span>
+              <p><span class="status">Sucesso</span> Processamento local concluído.</p>
+            </div>
+          </div>
+          <div class="test-info">
+            <div class="test-box sig">
+              <span class="tag-title">O que significa</span>
+              <p>O sistema funciona <b>mesmo com um participante só</b>. O Davi processou o intervalo inteiro sozinho e
+                o resultado foi confirmado. O sistema não quebra quando só há uma máquina disponível.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="section" id="desempenho">
+        <div class="section-kicker">04 / Desempenho</div>
+        <h2>Execução centralizada versus distribuída</h2>
+        <p>Os tempos abaixo são os valores registrados nos testes compartilhados. Valores abaixo de 1× indicam que a
+          execução distribuída foi mais lenta naquele ensaio.</p>
+        <p>Fórmula matemática usada para descobrir se vale a pena distribuir o trabalho: </p>
+        <p>Speedup = T1 / Tp mede quantas vezes o modo distribuído foi mais rápido ou mais lento que o modo centralizado
+        </p>
+        <p>eficiência = speedup / 2 computadores mede o aproveitamento. Ou seja, de todo o poder de processamento que os
+          2 computadores tinham, o quanto foi realmente útil e quanto foi "desperdiçado" com a conversa na rede</p>
+        <p>Em todos os casos, o distribuído foi mais lento. A diferença diminuiu conforme o volume aumentou, mas nunca
+          houve ganho de velocidade. </p>
+        <p>Ou seja, em nenhum dos testes, usar dois computadores fez o cálculo terminar mais rápido do que usar um
+          computador só </p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Volume</th>
+                <th class="num">Centralizado T1</th>
+                <th class="num">Distribuído Tp</th>
+                <th class="num">Speedup</th>
+                <th class="num">Eficiência (P=2)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1 milhão</td>
+                <td class="num">4,19 ms</td>
+                <td class="num">197 ms</td>
+                <td class="num">0,02127×</td>
+                <td class="num">1,06%</td>
+              </tr>
+              <tr>
+                <td>50 milhões</td>
+                <td class="num">89,61 ms</td>
+                <td class="num">191 ms</td>
+                <td class="num">0,4692×</td>
+                <td class="num">23,46%</td>
+              </tr>
+              <tr>
+                <td>100 milhões</td>
+                <td class="num">180,44 ms</td>
+                <td class="num">227 ms</td>
+                <td class="num">0,7949×</td>
+                <td class="num">39,74%</td>
+              </tr>
+              <tr>
+                <td>200 milhões</td>
+                <td class="num">364,78 ms</td>
+                <td class="num">377 ms</td>
+                <td class="num">0,9676×</td>
+                <td class="num">48,38%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note"><b>Interpretação:</b> Nesses quatro registros, o tempo distribuído foi maior que o
+          centralizado. A diferença diminuiu conforme o volume de dados aumentou. Isso acontece porque distribuir tem
+          custo de comunicação e coordenação, que pesa mais em cálculos pequenos.</div>
+      </section>
+
+      <section class="section" id="workers">
+        <div class="section-kicker">05 / Paralelismo local</div>
+        <h2>Variação do número de workers</h2>
+        <p>o que é um Worker? Um worker é uma parte do programa que roda em paralelo com as outras, permitindo que o
+          computador faça várias partes do cálculo ao mesmo tempo, em vez de uma de cada vez.</p>
+        <p>1 worker = o computador usa 1 núcleo para calcular.</p>
+        <p>2 workers = o computador usa 2 núcleos ao mesmo tempo.</p>
+        <p>Foi comparada a execução de 200 milhões de elementos com diferentes quantidades de computadores e workers.
+        </p>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Configuração</th>
+                <th class="num">Tempo total</th>
+                <th>Tempos locais</th>
+                <th>Resultado calculado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1 PC × 2 workers</td>
+                <td class="num">372 ms</td>
+                <td>259,90 ms</td>
+                <td>1885618090235.351</td>
+              </tr>
+              <tr>
+                <td>2 PCs × 1 worker cada</td>
+                <td class="num">357 ms</td>
+                <td>235,06 ms e 185,83 ms</td>
+                <td>1885618090235.351</td>
+              </tr>
+              <tr>
+                <td>2 PCs × 2 workers cada</td>
+                <td class="num">472 ms</td>
+                <td>169,04 ms e 101,69 ms</td>
+                <td>1885618090235.0938</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note info"><b>O que esses números nos dizem?</b> A grande surpresa: A configuração com mais workers
+          (2 PCs × 2 workers) foi a mais lenta (472 ms). A configuração com menos workers (2 PCs × 1 worker) foi a mais
+          rápida (357 ms).</div>
+        <div class="note info"><b>Por que isso acontece?</b> Porque criar e gerenciar workers também custa tempo. É
+          preciso "acordar" o worker, sincronizar o que ele está fazendo com o resto do sistema, juntar os resultados no
+          final... Se o cálculo não for gigantesco, o tempo gasto com essa "burocracia" dos workers é maior do que o
+          tempo que eles economizam ajudando.</div>
+      </section>
+
+      <section class="section" id="falhas">
+        <div class="section-kicker">06 / Tolerância a falhas</div>
+        <h2>Recuperação e redistribuição de tarefas</h2>
+        <h3>Falha notificada pelo cliente</h3>
+        <p>Com o servidor em Davi, O Gabriel forçou uma falha (--simulate-failure). O servidor recebeu o aviso, marcou a
+          tarefa como pendente e passou para outro computador</p>
+        <div class="log"><b>Teste:</b> 100 milhões de elementos
+          Modo: --simulate-failure
+          Resultado global: 666666671666.5139
+          Tempo aproximado: 500 ms
+          Comportamento: tarefa sinalizada como falha e reatribuída
+          Estado: resultado final confirmado</div>
+        <h3>Desconexão simulada — servidor em Davi</h3>
+        <p>O Gabriel "caiu" de propósito no meio do cálculo de 1 bilhão (--simulate-disconnect). O servidor do Davi
+          percebeu a queda e assumiu a parte que era do Gabriel.</p>
+        <div class="log"><b>Intervalo total:</b> 1 até 1.000.000.000
+          Davi: 1 até 500.000.000
+          Gabriel: 500.000.001 até 1.000.000.000
+          Gabriel: desconexão simulada após 100 ms
+          Davi: tarefa recuperada e concluída
+          Resultado global: 21081851083601.586
+          Tempo total registrado: 1364 ms
+          Tempo local da tarefa recuperada: 569.23 ms
+          <b>Status:</b> recuperação concluída
+        </div>
+        <h3>Desconexão simulada — servidor em Gabriel</h3>
+        <p>A mesma coisa, mas com os papéis invertidos. O Gabriel era o servidor e o Davi o cliente. O Gabriel derrubou
+          o próprio cliente após 100 ms. O servidor dele detectou a queda do "Nó #2", marcou como pendente e mandou a
+          tarefa para o "Nó #1" (Davi).</p>
+        <div class="log"><b>Intervalo total:</b> 1 até 1.000.000.000
+          Atribuição inicial a Gabriel: 500.000.001 até 1.000.000.000
+          Gabriel: --simulate-disconnect; desconexão após 100 ms
+          Servidor: detectou desconexão do Nó #2
+          Servidor: tarefa marcada como pendente
+          Servidor: redistribuiu para o Nó #1 (Davi)
+          Davi: processou 500.000.001 até 1.000.000.000
+          Resultado parcial: 13628291147421.504
+          Resultado global: 21081851083601.586
+          Tempo total registrado: 1954 ms
+          Nós participantes inicialmente: 2
+          <b>Status:</b> tarefa recuperada e experimento finalizado
+        </div>
+        <div class="note"><b>Limite do teste:</b> A queda foi simulada pelo programa. Ou seja, o cliente avisou ou
+          fechou a conexão. Isso prova que o sistema lida bem com desconexões do Socket.IO, mas não é a mesma coisa que
+          puxar o cabo de rede ou desligar o computador na tomada (nesses casos, a detecção pode ser mais demorada).
+        </div>
+      </section>
+
+      <section class="section" id="logs">
+        <div class="section-kicker">07 / Registros completos de execução</div>
+        <h2>Resultados nas duas direções de conexão</h2>
+        <h3>Configuração A — Gabriel acessando o servidor de Davi</h3>
+        <p>Execução distribuída de 100 milhões:</p>
+        <div class="log">Davi — intervalo 1 até 50.000.000
+          Tempo local: 109.60 ms
+          Resultado parcial: 235702263930.85297
+
+          Gabriel — intervalo 50.000.001 até 100.000.000
+          Tempo local: 102.91 ms
+          Resultado parcial: 430964407735.661
+
+          Resultado global: 666666671666.5139
+          Participantes: 2</div>
+        <p>Execução distribuída de 200 milhões:</p>
+        <div class="log">Davi — intervalo 1 até 100.000.000
+          Tempo local: 153.29 ms
+          Resultado parcial: 666666671666.484
+
+          Gabriel — intervalo 100.000.001 até 200.000.000
+          Tempo local: 148.57 ms
+          Resultado parcial: 1218955108568.6096
+
+          Resultado global registrado: 1885618090235.0938
+          Tempo total registrado: 254 ms
+          Participantes: 2</div>
+        <h3>Configuração B — Davi acessando o servidor de Gabriel</h3>
+        <p>Execução de 100 milhões:</p>
+        <div class="log">Davi conectado ao servidor de Gabriel
+          Resultado global: 666666671666.5139
+          Tempo total do servidor: 212 ms
+          Participantes: 2</div>
+        <p>Execução de 200 milhões:</p>
+        <div class="log">Resultado global: 1885618090235.0938
+          Tempo total registrado: 254 ms
+          Participantes: 2</div>
+        <p>Execução de 100 milhões com apenas Davi conectado (Gabriel manteve servidor e túnel ativos, mas encerrou seu
+          cliente):</p>
+        <div class="log">Nós conectados: 1
+          Experimento em andamento antes do teste: não
+          Intervalo processado por Davi: 1 até 100.000.000
+          Tempo local: 146.69 ms
+          Resultado: 666666671666.484
+          Servidor: resultado confirmado</div>
+        <div class="note info">Essa seção mostra os logs reais que provam que o sistema dividiu o trabalho corretamente,
+          entregou os resultados exatos e funcionou nas duas direções e também com apenas uma máquina.</div>
+      </section>
+
+      <section class="section" id="analise">
+        <div class="section-kicker">08 / Análise crítica</div>
+        <h2>O que os testes permitem afirmar</h2>
+        <ul>
+          <li><b>Comunicação:</b> os dois computadores conseguiram alternar os papéis de servidor/coordenador e cliente
+            remoto.</li>
+          <li><b>Execução distribuída:</b> foram concluídos experimentos de 100 milhões, 200 milhões e 1 bilhão de
+            elementos, com resultados globais registrados.</li>
+          <li><b>Paralelismo:</b> foram comparadas configurações com 1 ou 2 workers por computador.</li>
+          <li><b>Recuperação:</b> tanto a falha notificada quanto a desconexão simulada levaram à redistribuição e
+            conclusão da tarefa.</li>
+          <li><b>Desempenho:</b> nos quatro pares centralizado/distribuído disponíveis, o distribuído foi mais lento. O
+            custo de comunicação e coordenação pode superar o benefício do paralelismo para cargas pequenas ou nas
+            condições medidas.</li>
+        </ul>
+      </section>
+
+      <section class="section" id="conclusao">
+        <div class="section-kicker">9 / Conclusão</div>
+        <h2>Validação funcional em duas topologias</h2>
+        <p class="lead">Os computadores conversam, dividem o trabalho, usam Workers, juntam os resultados e, o mais
+          importante, se recuperam sozinhos quando alguém falha ou cai.</p>
+        <p>O teste de maior porte processou o intervalo de 1 a 1.000.000.000 (1 bilhão). Nas duas configurações de
+          servidor (servidor no Davi e servidor no Gabriel), o sistema detectou quando o Gabriel "caiu" e passou a
+          tarefa dele para o Davi, que terminou a conta com sucesso (resultado: 21.081.851.083.601,586).</p>
+        <p>o sistema não ficou mais rápido com dois computadores. Portanto, o grande trunfo do projeto não é a
+          velocidade, mas sim a capacidade de distribuir e recuperar tarefas (resiliência).</p>
+      </section>
+    </main>
+  </div>
+  <script>
+    (() => { const t1 = document.querySelector('#t1'), tp = document.querySelector('#tp'), p = document.querySelector('#p'), s = document.querySelector('#s'), e = document.querySelector('#e'), r = document.querySelector('#r'), w = document.querySelector('#warning'); const f = (n, d) => n.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }); function calc() { const a = Number(t1.value), b = Number(tp.value), c = Number(p.value); if (!(a > 0 && b > 0 && Number.isInteger(c) && c > 0)) { s.textContent = e.textContent = r.textContent = '—'; w.textContent = 'Informe tempos positivos e um número inteiro de computadores.'; return } const sp = a / b, ef = sp / c * 100, red = (1 - b / a) * 100; s.textContent = f(sp, 4) + '×'; e.textContent = f(ef, 2) + '%'; r.textContent = f(red, 2) + '%'; w.textContent = ef > 100 ? 'Eficiência acima de 100%: revise a unidade de paralelismo e a comparabilidade das medições.' : 'Eficiência calculada por computador; não equivale diretamente à utilização de CPU.' } [t1, tp, p].forEach(x => x.addEventListener('input', calc)); calc() })();
+  </script>
+</body>
+
+</html>
